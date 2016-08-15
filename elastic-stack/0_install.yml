@@ -5,7 +5,7 @@
 
 
   vars:
-    elastic_version: 5.0.0-alpha4
+    elastic_version: 5.0.0-alpha5
 
 
   tasks:
@@ -42,7 +42,6 @@
   - name: Make sure Elasticsearch autostarts and is started now
     service: name=elasticsearch enabled=yes state=started
 
-
   - name: Get Logstash
     get_url:
       url=https://download.elastic.co/logstash/logstash/packages/debian/logstash-{{ elastic_version }}.deb
@@ -53,39 +52,6 @@
 
   - name: Make sure Logstash autostarts and is started now
     service: name=logstash enabled=yes state=started
-
-
-  - name: Get Filebeat
-    get_url:
-      url=https://download.elastic.co/beats/filebeat/filebeat-{{ elastic_version }}-i386.deb
-      dest=/opt/filebeat.deb
-
-  - name: Install Filebeat
-    apt: deb=/opt/filebeat.deb
-
-  - name: Get Metricbeat
-    get_url:
-      url=https://download.elastic.co/beats/metricbeat/metricbeat-{{ elastic_version }}-i386.deb
-      dest=/opt/metricbeat.deb
-
-  - name: Install Metricbeat
-    apt: deb=/opt/metricbeat.deb
-
-  - name: Get Packetbeat
-    get_url:
-      url=https://download.elastic.co/beats/packetbeat/packetbeat-{{ elastic_version }}-i386.deb
-      dest=/opt/packetbeat.deb
-
-  - name: Install Packetbeat
-    apt: deb=/opt/packetbeat.deb
-
-  - name: Make sure Filebeat, Mtricbeat, and Packetbeat autostart and are started now
-    service: name={{ item }} enabled=yes state=started
-    with_items:
-      - filebeat
-      - metricbeat
-      - packetbeat
-
 
   - name: Get Kibana
     get_url:
@@ -103,20 +69,14 @@
       url=https://download.elastic.co/kibana/timelion/timelion-{{ elastic_version }}.zip
       dest=/opt/timelion.zip
 
-
-  - name: Install nginx so we can use it as a reverse proxy
-    apt: pkg=nginx state=latest
-
-  - name: Install Python Passlib so the nginx credentials can be hashed
-    apt: name=python-passlib state=latest update_cache=yes
-
-
-  - name: Make the all.sh script executable
-    file: path=/elastic-stack/all.sh mode=0755
+#  - name: Get the injector plugin to generate test data
+#    get_url:
+#      url=https://download.elastic.co/workshops/basic-kibana/injector/injector-5.0.jar
+#      dest=/opt/injector-5.0.jar
+#      mode=0755
 
 
-  - name: Get the injector plugin to generate test data
-    get_url:
-      url=https://download.elastic.co/workshops/basic-kibana/injector/injector-5.0.jar
-      dest=/opt/injector-5.0.jar
-      mode=0755
+  - include:  "/elastic-stack/1_configure-elasticsearch.yml"
+  - include:  "/elastic-stack/2_configure-kibana.yml"
+  - include:  "/elastic-stack/3_configure-logstash.yml"
+  - include:  "/elastic-stack/4_add-plugins.yml"

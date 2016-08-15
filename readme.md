@@ -1,6 +1,6 @@
 # Elastic Stack in Vagrant
 
-This repository will install the [Elastic Stack](https://www.elastic.co/products) (Elasticsearch, Logstash, Beats, and Kibana) with a simple `vagrant up` by using [Vagrant](https://www.vagrantup.com)'s [Ansible provisioner](https://www.vagrantup.com/docs/provisioning/ansible.html). All you need is a working [Vagrant installation](https://www.vagrantup.com/docs/installation/) 1.8.3+ and 2.5GB of RAM.
+This repository will install the [Elastic Stack](https://www.elastic.co/products) (Elasticsearch, Logstash, and Kibana) with a simple `vagrant up` by using [Vagrant](https://www.vagrantup.com)'s [Ansible provisioner](https://www.vagrantup.com/docs/provisioning/ansible.html). All you need is a working [Vagrant installation](https://www.vagrantup.com/docs/installation/) 1.8.3+ and 4GB of RAM.
 
 
 
@@ -13,23 +13,16 @@ With the [Ansible playbooks](https://docs.ansible.com/ansible/playbooks.html) in
 $ ansible-playbook /elastic-stack/1_configure-elasticsearch.yml
 $ ansible-playbook /elastic-stack/2_configure-kibana.yml
 $ ansible-playbook /elastic-stack/3_configure-logstash.yml
-$ ansible-playbook /elastic-stack/4_configure-filebeat.yml
-$ ansible-playbook /elastic-stack/4_configure-metricbeat.yml
-$ ansible-playbook /elastic-stack/4_configure-packetbeat.yml
-$ ansible-playbook /elastic-stack/5_configure-dashboards.yml
 $ ansible-playbook /elastic-stack/6_add-plugins.yml
 ```
-
-Or if you are in a hurry, run all playbooks with `/elastic-stack/all.sh` at once.
 
 
 
 ## Configure Kibana
 
-Access Kibana at [http://localhost:8080/app/kibana](http://localhost:8080/app/kibana) with the credentials `admin` and `admin`. You will be prompted to select a default index — select any, for example the `filebeat-*` index.
+Check whether apache index was populater or not: (http://localhost:9200/_cat/indices?v)
 
-Then you can search the logs (**Discover**), add pre-built or custom visualizations (**Visualize**), and put together a custom **Dashboard**.
-
+Login to kibana: http://localhost:5601/
 
 
 ## Generate test data

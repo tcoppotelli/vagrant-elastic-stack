@@ -5,3 +5,43 @@
 
 
   tasks:
+   
+    - name: fix issue with jvm memory
+      lineinfile: "dest='/etc/elasticsearch/jvm.options' state='absent' line='-Xms256m'"
+     
+    - name: fix issue with jvm memory 2
+      lineinfile: "dest='/etc/elasticsearch/jvm.options' insertbefore='-Xmx2g' line='-Xms2g'"
+      
+    - name: enable access to localhost from the host os
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='network.host: 0.0.0.0'"
+      
+    - name: configure es cluster name
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='cluster.name: tullio-es1'"
+      
+    - name: configure es cluster node
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='node.name: node-1'"
+
+    - name: configure es cluster
+      shell: "curl -XPUT 'http://localhost:9200/_all/_settings?preserve_existing=true' -d '{
+        \"index.number_of_replicas\" : \"0\",
+        \"index.number_of_shards\" : \"1\"
+        }'"
+
+
+    - name: add zen configuration
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='discovery.zen.minimum_master_nodes: 1'"
+      
+    - name: configure es script inline
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='script.inline: on'"
+      
+    - name: configure es script search
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='script.engine.groovy.inline.search: on'"
+      
+    - name: configure es cors
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='http.cors.enabled: true'"
+      
+    - name: configure es cors origin
+      lineinfile: "dest='/etc/elasticsearch/elasticsearch.yml' line='http.cors.allow-origin: \"/.*/\"'"
+
+    - name: Make sure Elasticsearch is restarted 
+      service: name=elasticsearch state=restarted

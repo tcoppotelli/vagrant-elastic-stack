@@ -3,19 +3,17 @@ Vagrant.require_version ">= 1.8.4"
 Vagrant.configure(2) do |config|
 
 
-    # Configure the base box
-    config.vm.define "ubuntu" do |ubuntu|
-        #ubuntu.vm.box = "ubuntu/xenial32"
-        ubuntu.vm.box = "ubuntu/trusty32" # Use a 32bit version, so everybody can run the box
-        ubuntu.vm.network :forwarded_port, guest: 80, host: 8080
-        ubuntu.vm.synced_folder "elastic-stack/", "/elastic-stack/", type: "rsync"
-    end
 
-
+    config.vm.box = "ubuntu/trusty32" # Use a 32bit version, so everybody can run the box      
+    config.vm.synced_folder "elastic-stack/", "/elastic-stack/", :mount_options => ["dmode=777","fmode=666"]
+	config.vm.network :forwarded_port, guest: 9200, host: 9200
+	config.vm.network :forwarded_port, guest: 9300, host: 9300
+	config.vm.network :forwarded_port, guest: 5601, host: 5601
+    
     # Configure the VirtualBox parameters
     config.vm.provider "virtualbox" do |vb|
         vb.name = "elastic-stack"
-        vb.customize [ "modifyvm", :id, "--memory", "2560" ]
+        vb.customize [ "modifyvm", :id, "--memory", "4096" ]
     end
 
 
