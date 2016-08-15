@@ -1,11 +1,5 @@
 ---
 
-- hosts: localhost
-  become: true
-
-
-  tasks:
-
   - name: Add the Logstash input configuration for file
     template: src=/elastic-stack/templates/file-input.conf dest=/etc/logstash/conf.d/00-file-input.conf
 

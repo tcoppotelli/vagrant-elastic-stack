@@ -1,16 +1,10 @@
 ---
 
-- hosts: localhost
-  become: true
-
-
-  tasks:
-
     - name: Stop Kibana to save have more memory available
       service: name=kibana state=stopped
 
     - name: Add Timelion
-      command: /usr/share/kibana/bin/kibana-plugin install file:///opt/timelion.zip
+      command: /usr/share/kibana/bin/kibana-plugin install timelion
 
     - name: Fix the permissions of the Kibana optimized folder
       file: path=/usr/share/kibana/optimize/ owner=kibana group=root mode=0777 recurse=yes

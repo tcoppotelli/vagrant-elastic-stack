@@ -13,7 +13,6 @@ With the [Ansible playbooks](https://docs.ansible.com/ansible/playbooks.html) in
 $ ansible-playbook /elastic-stack/1_configure-elasticsearch.yml
 $ ansible-playbook /elastic-stack/2_configure-kibana.yml
 $ ansible-playbook /elastic-stack/3_configure-logstash.yml
-$ ansible-playbook /elastic-stack/6_add-plugins.yml
 ```
 
 
@@ -31,4 +30,9 @@ You can use */opt/injector-5.0.jar* to generate test data in the `person` index.
 
 ```
 $ java -jar /opt/injector-5.0.jar 100000 1000
+```
+
+## How to manage timezone
+```
+vagrant plugin install vagrant-timezone
 ```

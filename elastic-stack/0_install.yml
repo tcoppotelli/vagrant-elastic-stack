@@ -64,10 +64,10 @@
   - name: Make sure Kibana autostarts and is started now
     service: name=kibana enabled=yes state=started
 
-  - name: Download Timelion
-    get_url:
-      url=https://download.elastic.co/kibana/timelion/timelion-{{ elastic_version }}.zip
-      dest=/opt/timelion.zip
+#  - name: Download Timelion
+#    get_url:
+#      url=https://download.elastic.co/kibana/timelion/timelion-{{ elastic_version }}.zip
+#      dest=/opt/timelion.zip
 
 #  - name: Get the injector plugin to generate test data
 #    get_url:
@@ -79,4 +79,3 @@
   - include:  "/elastic-stack/1_configure-elasticsearch.yml"
   - include:  "/elastic-stack/2_configure-kibana.yml"
   - include:  "/elastic-stack/3_configure-logstash.yml"
-  - include:  "/elastic-stack/4_add-plugins.yml"

@@ -2,7 +2,9 @@
 Vagrant.require_version ">= 1.8.4"
 Vagrant.configure(2) do |config|
 
-
+     if Vagrant.has_plugin?("vagrant-timezone")
+        config.timezone.value = :host
+      end
 
     config.vm.box = "ubuntu/trusty32" # Use a 32bit version, so everybody can run the box      
     config.vm.synced_folder "elastic-stack/", "/elastic-stack/", :mount_options => ["dmode=777","fmode=666"]
@@ -13,6 +15,7 @@ Vagrant.configure(2) do |config|
     # Configure the VirtualBox parameters
     config.vm.provider "virtualbox" do |vb|
         vb.name = "elastic-stack"
+        vb.cpus = 4
         vb.customize [ "modifyvm", :id, "--memory", "4096" ]
     end
 

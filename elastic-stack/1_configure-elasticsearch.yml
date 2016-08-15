@@ -1,11 +1,5 @@
 ---
 
-- hosts: localhost
-  become: true
-
-
-  tasks:
-   
     - name: fix issue with jvm memory
       lineinfile: "dest='/etc/elasticsearch/jvm.options' state='absent' line='-Xms256m'"
      
